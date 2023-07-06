@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { linkIcon } from "../assets";
+import { linkIcon, loader, copy, tick } from "../assets";
 import { useLazyGetSummaryQuery } from "../services/article";
 
 const Demo = () => {
@@ -11,6 +11,8 @@ const Demo = () => {
   const [allArticles, setAllArticles] = useState([]);
 
   const [getSummary, { error, isFetching }] = useLazyGetSummaryQuery();
+
+  const [copied, setCopied] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,21 +26,26 @@ const Demo = () => {
       // Si es asi lo guardamos para poder usarlo
       const newArticle = { ...article, summary: data.summary };
       setArticle(newArticle);
-      const updatedAllArticles = [newArticle, ...allArticles];
+      const updatedAllArticles = [...allArticles, newArticle];
       setAllArticles(updatedAllArticles);
 
       // Tambien lo almacenamos en local
       localStorage.setItem("article", JSON.stringify(updatedAllArticles));
-
     } else {
       console.error("No funcionó");
     }
   };
 
+  const handleCopy = (e) => {
+    setCopied(e);
+    navigator.clipboard.writeText(e);
+    setTimeout(() => setCopied(false), 3000);
+  }
+
   //Verificamos si hay datos almacenados en el local
   useEffect(() => {
     const articleLocalStorage = JSON.parse(localStorage.getItem("article"));
-    if(articleLocalStorage) {
+    if (articleLocalStorage) {
       setAllArticles(articleLocalStorage);
     }
   }, []);
@@ -75,6 +82,40 @@ const Demo = () => {
             Go
           </button>
         </form>
+      </div>
+      {/* Aquí va el historial */}
+      <div className="flex flex-col gap-1 max-h-60 overflow-y-auto">
+        {allArticles.map((item, key) => (
+          <div key={key} className="link_card">
+            <div className="copy_btn" onClick={() => {handleCopy(item.url)}}>
+              <img
+                src={copied === item.url ? tick : copy}
+                alt="copy_icon"
+                className="w-[40%] h-[40%] object-contain"
+              />
+            </div>
+            <p className="flex font-satoshi font-medium text-sm text-blue-700 truncate">
+              {item.url}
+            </p>
+          </div>
+        ))}
+      </div>
+      {/* Aquí va el resultado final */}
+      <div className="my-10 max-w-full flex justify-center items-center">
+        {isFetching ? (
+          <img src={loader} alt="loader" className="object-contain w-20 h-20"/>
+        ) : error ? (
+          <div>
+            <p>A ocurrido un error inesperado</p><br />
+            <span>
+              {error?.data?.error}
+            </span>
+          </div>
+        ) : (
+          <div className="summary_box">
+            <p className="font-inter font-medium text-sm text-gray-700">{article.summary}</p>
+          </div>
+        )}
       </div>
     </section>
   );
