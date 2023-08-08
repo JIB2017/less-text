@@ -1,5 +1,7 @@
 # Summize
 
+![Summize](https://github.com/JIB2017/less-text/assets/31837873/6cf8a92c-9609-424a-8ceb-e062c3634e1d)
+
 Summize es tu herramienta si lo que estás buscando es poder resumir esos textos largos en los que lo que realmente importa son solo unas pocas líneas de texto que resumen todo el contenido.
 
 ## Como se hizo:
