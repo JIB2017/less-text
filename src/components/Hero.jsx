@@ -10,7 +10,7 @@ const Hero = () => {
         </div>
       </nav>
       <div className="flex flex-col items-center">
-        <h1 className="head_text">Summarize Articles with <br className="max-md:hidden"/><span className="orange_gradient">OpenAI GPT-4</span></h1>
+        <h1 className="head_text">Summarize Articles with <br className="max-md:hidden"/><span className="orange_gradient">AI Technology</span></h1>
         <p className="desc">Simplify your reading with Summize, an open-source article summarizer <br />that transforms lengthy articles into clear and concise summaries</p>
       </div>
     </header>
